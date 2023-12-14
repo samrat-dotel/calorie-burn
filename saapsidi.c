@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <time.h>
 
-#define NUM_SNAKES 5
-#define NUM_LADDERS 5
+#define NUM_SNAKES 14
+#define NUM_LADDERS 8
 #define DEFAULT_FINAL_SQUARE 100
 
 void displayBoard(int numPlayers, char player[][20], int position[])
@@ -33,19 +33,49 @@ void playGame(int numPlayers, int finalSquare)
         position[i] = 0;
         consecutiveSixCount[i] = 0;
     }
-
+   
+   
     // Define snakes and ladders
-    int snakes[NUM_SNAKES][2] = {{17, 7}, {54, 34}, {92, 78}, {95, 72}, {99, 2}};
-    int ladders[NUM_LADDERS][2] = {{3, 21}, {19, 42}, {25, 65}, {38, 89}, {60, 81}};
+    int snakes[NUM_SNAKES][2] = {
+        {23,7},
+        {28,6},
+        {36,8},
+        {44,5},
+        {46,16},
+        {49,11},
+        {54,22},
+        {60,32},
+        {68,22},
+        {82,42},
+        {91,18},
+        {94,62},
+        {97,8},
+        {99,2}
+        };
+    int ladders[NUM_LADDERS][2] = {
+        {3, 22},
+        {7, 21},
+        {14,43},
+        {19, 42}, 
+        {25, 65}, 
+        {38, 89}, 
+        {60, 81},
+        {42,62}
+        };
 
     int turn = 0;
     while (1)
     {
-        printf("\n%s's turn:\n", player[turn % numPlayers]);
+        printf("%s is rolling now .... \n", player[(turn % numPlayers)]);
 
         int current = rand() % 6 + 1;
         printf("Rolled a %d \n", current);
         sleep(1);
+
+        // Move the player
+        if(!(position[turn % numPlayers] + current >100)){
+            position[turn % numPlayers] += current;
+        }
 
         // Check for snakes and ladders
         for (int i = 0; i < NUM_SNAKES; i++)
@@ -66,13 +96,12 @@ void playGame(int numPlayers, int finalSquare)
             }
         }
 
-        // Move the player
-        position[turn % numPlayers] += current;
+        
 
         // Check if the player reaches or passes the final square
         if (position[turn % numPlayers] >= finalSquare)
         {
-            printf("Congratulations! %s reached the final square! They are the winner!\n", player[turn % numPlayers]);
+            printf("Congratulations! %s reached the final square!, he is the winner!\n", player[turn % numPlayers]);
             displayBoard(numPlayers, player, position);
             return;
         }
@@ -111,10 +140,10 @@ void playGame(int numPlayers, int finalSquare)
         }
 
         displayBoard(numPlayers, player, position);
-
-        printf("%s is rolling now .... \n", player[turn % numPlayers]);
         sleep(1.5);
         turn += 1;
+
+        // system("clear");
     }
 }
 
