@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define NUM_SNAKES 14
-#define NUM_LADDERS 8
+#define NUM_LADDERS 9
 #define DEFAULT_FINAL_SQUARE 100
 
 void displayBoard(int numPlayers, char player[][20], int position[])
@@ -60,7 +60,8 @@ void playGame(int numPlayers, int finalSquare)
         {25, 65}, 
         {38, 89}, 
         {60, 81},
-        {42,62}
+        {42,62},
+        {69,98}
         };
 
     int turn = 0;
@@ -115,6 +116,13 @@ void playGame(int numPlayers, int finalSquare)
             {
                 printf("Oh no! Collision with %s! %s eliminates %s, sending them back to square 1.\n", player[i], player[turn % numPlayers], player[i]);
                 position[i] = 1; // The latest player eliminates the previous one
+                printf("\n\n %s gets another chance",player[turn % numPlayers]);
+
+                if(current == 6){
+                    consecutiveSixCount[turn % numPlayers]++;
+                }
+                
+                continue;
             }
         }
 

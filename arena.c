@@ -4,6 +4,7 @@
 #include <time.h>
 
 #define MAX_TURNS 50
+#define HP_GAIN 10
 
 void playGame(int numPlayers, int initialHP, int lucky_hp_threshold) {
     int turn = 0;
@@ -31,16 +32,7 @@ void playGame(int numPlayers, int initialHP, int lucky_hp_threshold) {
         printf("%s attacks with a damage of %d \n", player[turn % numPlayers], attack);
         sleep(1);
 
-        if (attack == 6) {
-            if (healthPoints[turn % numPlayers] <= lucky_hp_threshold) {
-                // If the player's health is below the threshold, gaining 5 HP even with a lucky attack
-                printf("Lucky! %s's attack was successful, and they gain 5 HP.\n", player[turn % numPlayers]);
-                healthPoints[turn % numPlayers] += 5;
-            } else {
-                printf("Lucky! %s's attack was successful.(Threshold HP rule prohibits hp addition)\n", player[turn % numPlayers]);
-            }
-        } 
-            // Decrease health points of other players
+        // Decrease health points of other players
             for (int i = 0; i < numPlayers; i++) {
                 if (i != turn % numPlayers) {
                     healthPoints[i] -= attack;
@@ -52,6 +44,19 @@ void playGame(int numPlayers, int initialHP, int lucky_hp_threshold) {
                     }
                 }
             }
+
+
+        if (attack == 6) {
+            if (healthPoints[turn % numPlayers] <= lucky_hp_threshold) {
+                // If the player's health is below the threshold, gaining 5 HP even with a lucky attack
+                printf("Lucky! %s's attack was successful, and they gain %d HP.\n", player[turn % numPlayers],HP_GAIN);
+                healthPoints[turn % numPlayers] += HP_GAIN;
+                
+            } else {
+                printf("%s got a lucky hit, gets another chance.\n", player[turn % numPlayers]);
+                continue;
+            }
+        } 
 
         printf("Health Points:\n");
         for (int i = 0; i < numPlayers; i++) {
